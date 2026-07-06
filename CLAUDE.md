@@ -135,6 +135,11 @@ Financial outputs:
   (brand store locators, published CBRE/JLL/CoStar market reports) rather than
   the illustrative placeholder figures in the original plan doc. Any figure
   that could not be verified from a public source is labeled as an estimate.
+- Building permits: Census's own metro-annual permits page is frozen at 2021.
+  Switched to NAHB's "Building Permits by State and Metro Area" workbook,
+  which republishes the same underlying Census monthly permit survey at
+  metro granularity and is current (FY2025 totals used, refreshed through
+  May 2026 at pull time). See data_collection/zillow_collector.py.
 
 ## Hypothesis (stated here so every analysis confirms or revises it)
 Nashville and Charlotte are the recommended markets. Nashville: highest population

@@ -3,15 +3,16 @@ data for the 5 candidate metros.
 
 ZHVI is pulled live from Zillow Research's public CSV (updated monthly).
 
-Census's Building Permits Survey metro-level ANNUAL file (msaannual.html)
-has not been updated past 2021 (Final) as of this run -- Census continues to
-publish permits at national/state/county granularity but the metro-annual
-Excel breakdown Census hosts directly stops at 2021. Rather than leave this
-input stale-and-unlabeled or guess, we use that most recent officially
-published metro total and clearly flag its vintage. This is a 20%
-sub-component of one scoring dimension (dimension 3, 20% weight), so the
-staleness has limited impact on the overall model.
-Source: https://www.census.gov/construction/bps/xls/msaannual_202199.xls
+Census's own Building Permits Survey metro-level ANNUAL file
+(census.gov/construction/bps/msaannual.html) has not been updated past 2021
+(Final) -- Census still collects permits monthly at metro granularity, it
+just doesn't republish that as a metro-annual table on that particular page.
+NAHB (National Association of Home Builders) processes the same underlying
+Census monthly permit survey and republishes a metro-level workbook that IS
+current (through May 2026 at the time of this pull), so we use NAHB's
+FY2025 total instead of Census's stale 2021 metro-annual file.
+Source: https://www.nahb.org/news-and-economics/housing-economics/state-and-local-data/building-permits-by-state-and-metro-area
+(direct file: table32-building-permits-by-state-and-msa.xlsx, "FY2025" column)
 """
 
 from pathlib import Path
@@ -32,18 +33,19 @@ METRO_ZILLOW_NAMES = {
     "Indianapolis, IN": "Indianapolis, IN",
 }
 
-# SOURCE: US Census Bureau, Building Permits Survey, Permits by Metropolitan
-# Area Annual, 2021 (Final) -- most recent metro-level annual total Census
-# has published as of this data pull (verified July 2026).
-# https://www.census.gov/construction/bps/xls/msaannual_202199.xls
-BUILDING_PERMITS_2021_FINAL = {
-    "Nashville, TN": 32191,
-    "Austin, TX": 50907,
-    "Denver, CO": 30006,
-    "Charlotte, NC": 30126,
-    "Indianapolis, IN": 13451,
+# SOURCE: NAHB "Building Permits by State and Metro Area" workbook
+# (table32-building-permits-by-state-and-msa.xlsx), May 2026 edition,
+# FY2025 TOTAL column -- underlying data is Census's monthly Building
+# Permits Survey, which NAHB aggregates to metro level more currently than
+# Census's own metro-annual page. Units are housing units authorized.
+BUILDING_PERMITS_FY2025 = {
+    "Nashville, TN": 19203,
+    "Austin, TX": 27322,
+    "Denver, CO": 15948,
+    "Charlotte, NC": 22233,
+    "Indianapolis, IN": 11463,
 }
-BUILDING_PERMITS_YEAR = 2021
+BUILDING_PERMITS_YEAR = 2025
 
 
 def download_zillow_zhvi() -> pd.DataFrame:
@@ -88,7 +90,7 @@ def get_housing_permit_data() -> pd.DataFrame:
             "annual_permits": permits,
             "permits_year": BUILDING_PERMITS_YEAR,
         }
-        for metro_name, permits in BUILDING_PERMITS_2021_FINAL.items()
+        for metro_name, permits in BUILDING_PERMITS_FY2025.items()
     ]
     return pd.DataFrame(rows)
 
@@ -96,7 +98,7 @@ def get_housing_permit_data() -> pd.DataFrame:
 def collect_all_housing_data() -> pd.DataFrame:
     print("Pulling Zillow ZHVI data...")
     zhvi = download_zillow_zhvi()
-    print(f"Loading Census building permits ({BUILDING_PERMITS_YEAR} Final, most recent metro-level annual published)...")
+    print(f"Loading building permits (FY{BUILDING_PERMITS_YEAR}, via NAHB/Census monthly survey)...")
     permits = get_housing_permit_data()
 
     merged = zhvi.merge(permits, on="metro_name")
