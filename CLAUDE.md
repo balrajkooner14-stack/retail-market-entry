@@ -119,6 +119,13 @@ Financial outputs:
 - All heavy computation done at build time; API just serves pre-computed results
 - Frontend is primarily static — chart images + scoring table from API
 
+## Verified logistics distances (July 2026 web research)
+- Nashville -> Charlotte DC: 409 miles
+- Austin -> Salt Lake City DC: 1,291 miles
+- Denver -> Salt Lake City DC: 521 miles
+- Charlotte -> Charlotte DC: 0 miles
+- Indianapolis -> Charlotte DC: 576 miles
+
 ## Data sourcing notes (this build)
 - Census ACS, BLS OES/CEX, Zillow ZHVI: pulled programmatically where the public
   API/CSV endpoint is verified to work; if an endpoint is unavailable, fall back
