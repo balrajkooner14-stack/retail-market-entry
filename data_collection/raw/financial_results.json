@@ -1,0 +1,122 @@
+{
+  "Indianapolis, IN": {
+    "city": "Indianapolis, IN",
+    "cluster_pl": [
+      {
+        "year": 1,
+        "revenue": 2183240.187425364,
+        "cogs": 982458.0843414137,
+        "gross_profit": 1200782.10308395,
+        "rent": 199800.0,
+        "labor": 923686.3999999999,
+        "marketing": 65497.205622760914,
+        "ga": 174659.2149940291,
+        "total_opex": 1363642.8206167899,
+        "ebitda": -162860.71753283986,
+        "ebitda_margin_pct": -7.459587748102837,
+        "cumulative_cash_flow": -1062860.7175328399
+      },
+      {
+        "year": 2,
+        "revenue": 2855006.39894086,
+        "cogs": 1284752.879523387,
+        "gross_profit": 1570253.5194174729,
+        "rent": 199800.0,
+        "labor": 923686.3999999999,
+        "marketing": 85650.19196822579,
+        "ga": 228400.51191526878,
+        "total_opex": 1437537.1038834946,
+        "ebitda": 132716.41553397826,
+        "ebitda_margin_pct": 4.648550545568407,
+        "cumulative_cash_flow": -930144.3019988616
+      },
+      {
+        "year": 3,
+        "revenue": 3358831.0575774824,
+        "cogs": 1511473.975909867,
+        "gross_profit": 1847357.0816676153,
+        "rent": 199800.0,
+        "labor": 923686.3999999999,
+        "marketing": 100764.93172732447,
+        "ga": 268706.4846061986,
+        "total_opex": 1492957.816333523,
+        "ebitda": 354399.2653340923,
+        "ebitda_margin_pct": 10.551267963733151,
+        "cumulative_cash_flow": -575745.0366647693
+      }
+    ],
+    "payback_months": Infinity,
+    "npv_base": -672106.7962383681,
+    "npv_risk_adjusted": -687356.24412144,
+    "scenario_pessimistic_npv": -1351005.2692972303,
+    "scenario_optimistic_npv": -218831.1570715689,
+    "key_metrics": {
+      "y1_ebitda": -162860.71753283986,
+      "y2_ebitda": 132716.41553397826,
+      "y3_ebitda": 354399.2653340923,
+      "y1_revenue": 2183240.187425364,
+      "y2_revenue": 2855006.39894086,
+      "y3_revenue": 3358831.0575774824
+    }
+  },
+  "Charlotte, NC": {
+    "city": "Charlotte, NC",
+    "cluster_pl": [
+      {
+        "year": 1,
+        "revenue": 2778420.8605365567,
+        "cogs": 1250289.3872414506,
+        "gross_profit": 1528131.473295106,
+        "rent": 250830.0,
+        "labor": 920441.6,
+        "marketing": 83352.6258160967,
+        "ga": 222273.66884292453,
+        "total_opex": 1476897.8946590214,
+        "ebitda": 51233.57863608468,
+        "ebitda_margin_pct": 1.8439819310236059,
+        "cumulative_cash_flow": -848766.4213639153
+      },
+      {
+        "year": 2,
+        "revenue": 3633319.586855497,
+        "cogs": 1634993.814084974,
+        "gross_profit": 1998325.7727705233,
+        "rent": 250830.0,
+        "labor": 920441.6,
+        "marketing": 108999.58760566491,
+        "ga": 290665.5669484398,
+        "total_opex": 1570936.754554105,
+        "ebitda": 427389.01821641834,
+        "ebitda_margin_pct": 11.76304500607687,
+        "cumulative_cash_flow": -421377.403147497
+      },
+      {
+        "year": 3,
+        "revenue": 4274493.631594703,
+        "cogs": 1923522.1342176162,
+        "gross_profit": 2350971.4973770864,
+        "rent": 250830.0,
+        "labor": 920441.6,
+        "marketing": 128234.80894784107,
+        "ga": 341959.49052757624,
+        "total_opex": 1641465.8994754176,
+        "ebitda": 709505.5979016689,
+        "ebitda_margin_pct": 16.598588255165346,
+        "cumulative_cash_flow": 288128.1947541719
+      }
+    ],
+    "payback_months": 31.126834309305554,
+    "npv_base": 32852.10224597382,
+    "npv_risk_adjusted": -8531.754406516397,
+    "scenario_pessimistic_npv": -829840.7030266612,
+    "scenario_optimistic_npv": 609696.7841493618,
+    "key_metrics": {
+      "y1_ebitda": 51233.57863608468,
+      "y2_ebitda": 427389.01821641834,
+      "y3_ebitda": 709505.5979016689,
+      "y1_revenue": 2778420.8605365567,
+      "y2_revenue": 3633319.586855497,
+      "y3_revenue": 4274493.631594703
+    }
+  }
+}

@@ -141,7 +141,7 @@ Financial outputs:
   metro granularity and is current (FY2025 totals used, refreshed through
   May 2026 at pull time). See data_collection/zillow_collector.py.
 
-## Hypothesis (stated here so every analysis confirms or revises it)
+## Original hypothesis (stated before data collection, for comparison)
 Nashville and Charlotte are the recommended markets. Nashville: highest population
 growth rate, strong millennial demographic, limited premium home goods competition,
 and proximity to Charlotte DC. Charlotte: major Southeast growth hub, strong
@@ -150,5 +150,24 @@ logistics cost). Austin is the expected runner-up that gets displaced by saturat
 and real estate cost. Indianapolis is the wildcard — low cost but limited upside.
 Denver is solid but high labor and real estate costs hurt the economics.
 
-This hypothesis is a starting point to test against the data, not a foregone
-conclusion — the scoring model may confirm or revise it.
+## Actual recommendation (revised by real data -- see analysis/scoring_model.py)
+The scoring model recommends **Indianapolis and Charlotte**, not Nashville.
+Composite scores: Indianapolis 4.25, Charlotte 4.08, Austin 3.77, Nashville
+3.55, Denver 3.36. Robust across all 3 sensitivity weight profiles (baseline,
+financial-focus, growth-focus) -- Indianapolis and Charlotte occupy the top 2
+slots in all three (they swap #1/#2 order under growth-focus only).
+
+Why the hypothesis was revised: Nashville's real estate market has caught up
+since the hypothesis was written -- it has the HIGHEST retail lease rate of
+all 5 candidates ($30.12/sqft, real 2026 data) and above-average competitive
+density, eroding the unit economics that made it the presumed favorite.
+Indianapolis, by contrast, is genuinely underrated on cost: the cheapest
+lease rate ($22.20/sqft), tied-lowest competitive saturation, and solid
+housing fundamentals -- its only real weakness is slower population growth,
+which the 15%-weighted dimension 1 isn't enough to offset given how much
+cheaper it is to operate there. This is the intended behavior of a
+hypothesis-driven analysis: forming a view, testing it against real data,
+and revising it when the data disagrees -- not a data or modeling error.
+
+All downstream deliverables (financial model, deck, memo, dashboard) are
+built around **Indianapolis + Charlotte** as the two recommended markets.
