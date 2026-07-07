@@ -5,6 +5,8 @@ models.
 """
 
 import json
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -95,6 +97,10 @@ def _add_picture_fit(slide, image_path, left, top, max_width, max_height):
     slide.shapes.add_picture(str(image_path), centered_left, top, width=width, height=height)
 
 
+def _fmt_money(value: float) -> str:
+    return f"-${abs(value):,.0f}" if value < 0 else f"${value:,.0f}"
+
+
 def build_deck():
     scores = pd.read_csv(RAW_DIR / "city_scores.csv").sort_values("rank")
     financial_results = json.loads((RAW_DIR / "financial_results.json").read_text())
@@ -159,7 +165,7 @@ def build_deck():
     _add_bullets(s, Inches(0.7), Inches(2.8), Inches(11.8), Inches(4.3), [
         f"Indianapolis ranks #1 on market attractiveness (composite {city1['composite_score']:.2f}/5.0) — cheapest lease rate (${city1['retail_lease_rate_sqft_annual']:.2f}/sqft) and lowest competitive density of any candidate — but slower population growth ({city1['population_growth_rate_pct']:.1f}%/5yr) means its financial case needs more runway to prove out than our 3-year model window",
         f"Charlotte ranks #2 (composite {city2['composite_score']:.2f}/5.0), sits at Meridian's own East Coast distribution hub (zero logistics cost), and is the only recommended market that clears payback within the model horizon (~{fin2['payback_months']:.0f} months)",
-        f"Combined risk-adjusted 3-year NPV is currently negative (${combined_npv_risk:,.0f}) at the standard 4,500 sqft / 10-FTE format — this is a real constraint, not a rounding error, and the phased approach below is how we manage that risk",
+        f"Combined risk-adjusted 3-year NPV is currently negative ({_fmt_money(combined_npv_risk)}) at the standard 4,500 sqft / 10-FTE format — this is a real constraint, not a rounding error, and the phased approach below is how we manage that risk",
         "Recommended sequencing: open Charlotte's 2-store cluster now; open 1 Indianapolis pilot store (not 2) to validate real-world performance before committing the second store there",
     ], size=17)
 
@@ -217,7 +223,7 @@ def build_deck():
     metrics = [
         ("Combined Year 3 EBITDA", f"${combined_y3_ebitda:,.0f}"),
         ("Charlotte Payback Period", f"{fin2['payback_months']:.0f} months"),
-        ("Combined Risk-Adj. NPV", f"${combined_npv_risk:,.0f}"),
+        ("Combined Risk-Adj. NPV", _fmt_money(combined_npv_risk)),
     ]
     col_width = Inches(3.9)
     for i, (label, value) in enumerate(metrics):
@@ -274,6 +280,36 @@ def build_deck():
     out_path = OUTPUTS_DIR / "meridian_home_deck.pptx"
     prs.save(out_path)
     print(f"Saved {out_path} ({len(prs.slides.__iter__.__self__._sldIdLst)} slides)")
+
+    convert_to_pdf(out_path)
+
+
+def convert_to_pdf(pptx_path: Path):
+    """Converts the deck to PDF via LibreOffice headless mode so it can be
+    downloaded from the dashboard without PowerPoint installed. Falls back
+    to a note if LibreOffice (soffice) isn't available."""
+    soffice = shutil.which("soffice")
+    pdf_path = pptx_path.with_suffix(".pdf")
+    if not soffice:
+        note_path = OUTPUTS_DIR / "meridian_home_deck_PDF_NOT_AVAILABLE.txt"
+        note_path.write_text(
+            "LibreOffice (soffice) was not found on this machine, so the PDF "
+            "version of the deck could not be generated automatically.\n"
+            f"Open {pptx_path.name} in PowerPoint, Keynote, or Google Slides "
+            "and use File > Export/Download as PDF instead."
+        )
+        print(f"soffice not found -- wrote fallback note to {note_path}")
+        return
+
+    subprocess.run(
+        [soffice, "--headless", "--convert-to", "pdf", "--outdir", str(OUTPUTS_DIR), str(pptx_path)],
+        check=True,
+        capture_output=True,
+    )
+    if pdf_path.exists():
+        print(f"Converted to {pdf_path}")
+    else:
+        print("soffice ran but no PDF was produced -- check LibreOffice installation")
 
 
 if __name__ == "__main__":

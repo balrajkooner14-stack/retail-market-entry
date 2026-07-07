@@ -37,6 +37,9 @@ def build_memo():
     fin2 = financial_results[city2["metro_name"]]
     combined_npv_risk = fin1["npv_risk_adjusted"] + fin2["npv_risk_adjusted"]
 
+    def _fmt_money(value: float) -> str:
+        return f"-${abs(value):,.0f}" if value < 0 else f"${value:,.0f}"
+
     out_path = OUTPUTS_DIR / "recommendation_memo.pdf"
     doc = SimpleDocTemplate(
         str(out_path), pagesize=letter,
@@ -88,7 +91,7 @@ def build_memo():
         f"{fin2['payback_months']:.0f} months with a modest positive base-case NPV, but "
         f"{city1['metro_name']}'s cluster does not clear payback within our 3-year modeling window at that "
         f"same format, and the combined risk-adjusted 3-year NPV across both markets as modeled is currently "
-        f"negative (${combined_npv_risk:,.0f}). This is precisely why we are recommending a single pilot "
+        f"negative ({_fmt_money(combined_npv_risk)}). This is precisely why we are recommending a single pilot "
         f"store in {city1['metro_name']} rather than the full cluster: it lets us validate real-world "
         f"performance against the model, and revisit store format or staffing assumptions, before committing "
         f"further capital there."
