@@ -58,7 +58,7 @@ Which two of five candidate markets offer the best risk-adjusted return?
 
 ## Deliverables
 
-- **Interactive dashboard:** deployed on Vercel *(link added after deployment)*
+- **Interactive dashboard:** [retail-market-entry.vercel.app](https://retail-market-entry.vercel.app)
 - **Executive deck (PDF):** `outputs/meridian_home_deck.pdf` — 10-slide boardroom-ready deck
 - **Excel scoring & financial model:** `outputs/scoring_model.xlsx` — 6 tabs (scoring, thresholds, sensitivity, 2 financial models, data sources)
 - **1-page recommendation memo:** `outputs/recommendation_memo.pdf`

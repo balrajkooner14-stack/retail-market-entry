@@ -188,7 +188,7 @@ export default function Home() {
         <DownloadPanel downloads={downloads} />
         <p className="text-sm text-[#898781]">
           <a
-            href="https://github.com"
+            href="https://github.com/balrajkooner14-stack/retail-market-entry"
             className="underline hover:text-[#0D1B2A]"
             target="_blank"
             rel="noopener noreferrer"
