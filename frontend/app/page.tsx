@@ -84,8 +84,8 @@ export default function Home() {
           Which Two Markets Should Meridian Home Enter Next?
         </h1>
         <p className="text-lg text-[#52514E] max-w-2xl mx-auto">
-          A McKinsey-style market entry analysis across 5 US metros using 7 data-driven scoring
-          dimensions
+          Scoring 5 candidate metros across 7 weighted dimensions to find Meridian Home&apos;s next
+          two store locations
         </p>
         <div className="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto pt-6">
           {recommendedCities.map((city) => (

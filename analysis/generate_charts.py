@@ -2,15 +2,10 @@
 as static images in the Next.js dashboard). All charts saved as high-res
 PNGs to outputs/charts/.
 
-Color usage follows two different encodings depending on what the chart is
-showing (see the project's dataviz guidance):
-  - Radar / dimension-breakdown / heatmap charts show CITY IDENTITY (which
-    of the 5 cities is which) -> a fixed-order 5-hue categorical palette,
-    validated for CVD-safety (see palette below).
-  - Composite-score / financial charts show RECOMMENDED STATUS (this city
-    made the cut or didn't) -> a green "good" status shade for the 2
-    recommended cities and a neutral grey for the other 3, which is a
-    status distinction, not an identity one.
+Two color schemes: charts showing which city is which (radar, dimension
+breakdown, heatmap) use a fixed 5-hue palette per city; charts showing
+recommended-vs-not (composite score, financials) use green for the 2
+recommended cities and grey for the rest.
 """
 
 import json
@@ -31,7 +26,7 @@ CHARTS_DIR.mkdir(parents=True, exist_ok=True)
 plt.rcParams["font.family"] = "sans-serif"
 plt.rcParams["font.sans-serif"] = ["Arial", "Helvetica", "DejaVu Sans"]
 
-# Fixed-order 5-hue categorical palette (validated CVD-safe, see dataviz skill)
+# Fixed-order 5-hue categorical palette, colorblind-safe
 CITY_COLORS = {
     "Nashville, TN": "#2a78d6",  # blue
     "Austin, TX": "#1baf7a",  # aqua
@@ -155,10 +150,7 @@ def chart_competitive_heatmap(df: pd.DataFrame):
     matrix = df[brands].values
     fig, ax = plt.subplots(figsize=(9, 4.5))
 
-    # Sequential-style shading (0 -> light, higher counts -> darker), but
-    # capped as discrete bands so it doubles as a simple status read: 0 (light),
-    # 1-2 (mid), 3+ (dark) -- consistent with the "green good / grey neutral"
-    # idiom used elsewhere: here darker = more competitive saturation (worse).
+    # 0 stores = light, 1-2 = mid, 3+ = dark (more stores = more saturated)
     def cell_color(v):
         if v == 0:
             return "#eaf7ec"

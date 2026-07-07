@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.13-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-0.128-teal) ![Next.js](https://img.shields.io/badge/Next.js-16-black) ![Vercel](https://img.shields.io/badge/Deploy-Vercel-black) ![Census](https://img.shields.io/badge/Data-US%20Census-blue) ![BLS](https://img.shields.io/badge/Data-BLS-blue)
 
-A McKinsey-style market entry analysis identifying the two best US expansion markets for a simulated specialty retailer — built with real public data, MECE structured thinking, a weighted scoring model, and a 3-year financial model.
+A market entry analysis for a simulated specialty retailer, built the way a consulting team would approach it: an issue tree, a weighted scoring model across 5 candidate metros, and a 3-year financial model — all on real public data.
 
 ## The Engagement
 
@@ -44,17 +44,17 @@ Which two of five candidate markets offer the best risk-adjusted return?
 | Labor Cost (inverted) | 10% | BLS OEWS |
 | Logistics Proximity (inverted) | 5% | Driving distance to nearest DC |
 
-**Financial model assumptions:** 4,500 sqft store, 10 FTE, 5% annual conversion of trade-area homeowner households, $285 average transaction value, 1.4 visits/year, 3-year ramp-up (65% / 85% / 100% of steady state), NPV at 10% (base) and 12% (risk-adjusted) discount rates. Full assumptions documented in `CLAUDE.md`.
+**Financial model assumptions:** 4,500 sqft store, 10 FTE, 5% annual conversion of trade-area homeowner households, $285 average transaction value, 1.4 visits/year, 3-year ramp-up (65% / 85% / 100% of steady state), NPV at 10% (base) and 12% (risk-adjusted) discount rates. Full assumptions in `analysis/financial_model.py`.
 
 ## Key Findings
 
-**Recommendation: Charlotte, NC first (Q1 2026), with a single pilot store in Indianapolis, IN in parallel** — not a full 2-store commitment in both markets.
+**Recommendation: Charlotte first (Q1 2026), with a single pilot store in Indianapolis running in parallel** — not a full 2-store cluster in both markets.
 
-- Indianapolis ranks #1 on market attractiveness (composite 4.25/5.0) — cheapest lease rate of any candidate ($22.20/sqft) and lowest competitive density — but slower population growth means its financial case needs more runway than the 3-year model window.
-- Charlotte ranks #2 (composite 4.08/5.0), sits at Meridian's own East Coast distribution hub (zero logistics cost), and is the only recommended market that clears payback within the model horizon (~31 months).
-- This ranking is **robust across 3 independent sensitivity weight profiles** (baseline, financial-focus, growth-focus) — Indianapolis and Charlotte occupy the top 2 slots in all three.
-- The original pre-data hypothesis was Nashville + Charlotte. Real 2026 data revised that: Nashville turned out to have the *highest* lease rate and above-average competitive density of the 5 candidates, eroding the economics that made it the presumed favorite.
-- Combined risk-adjusted 3-year NPV at the standard store format is currently negative (-$695,888) — a real constraint, which is why the recommendation is a phased entry (Charlotte's full cluster, Indianapolis as a single pilot) rather than a 2-store commitment in both markets.
+Indianapolis actually comes out on top of the composite ranking (4.25/5.0) — the cheapest lease rate of any candidate and the lowest competitive density — but its population growth is the slowest of the two finalists, so its financial case needs more runway than the 3-year model gives it. Charlotte (4.08/5.0) sits at Meridian's own East Coast distribution hub, so logistics cost is zero, and it's the only market that clears payback within the model window, at roughly 31 months.
+
+That ranking held up across three different weight profiles (baseline, financial-focus, growth-focus), so it's not an artifact of one particular set of assumptions. It also isn't what I expected going in — my working hypothesis was Nashville + Charlotte, but Nashville's lease rate turned out to be the highest of all five candidates once I had real numbers, which is what pushed it out of the top two.
+
+Combined risk-adjusted NPV across both markets at the standard store format is currently negative (-$695,888), which is the real reason behind the phased recommendation rather than committing to two full store clusters up front.
 
 ## Deliverables
 
@@ -110,14 +110,4 @@ Visit `http://localhost:3000`.
 
 ## Portfolio Context
 
-This project sits alongside a **Target Assortment Optimization** project in the same portfolio. Together they tell a complete retail strategy story: that project modeled how a retailer should configure its product mix across existing locations; this one models where the next locations should be. Both apply the same MECE / hypothesis-driven / financial-modeling toolkit that consulting engagements require.
-
-**Skills demonstrated:** MECE structured thinking, hypothesis-driven analysis (and honest hypothesis revision when data disagreed), weighted multi-criteria scoring with sensitivity analysis, 3-year financial modeling (NPV, payback, scenario analysis), and full-stack delivery of consulting artifacts (Excel, PowerPoint, memo, and a live interactive dashboard).
-
-## Interview Talking Points
-
-**30-second version:** "I completed a full McKinsey-style market entry analysis for a simulated specialty retailer, identifying which two of five US metros to prioritize for expansion. I built a 7-dimension weighted scoring model using real Census, BLS, and Zillow data, and a 3-year financial model with NPV and payback analysis. The data actually revised my initial hypothesis — Indianapolis turned out to beat Nashville once I accounted for real 2026 lease rates and competitive density — which is exactly how a hypothesis-driven analysis is supposed to work. The output is a 10-slide deck, an Excel model, a 1-page memo, and a live dashboard."
-
-**Methodology version:** "I structured the problem with a MECE issue tree — market attractiveness, competitive positioning, financial returns — then formed a hypothesis and tested it against 7 weighted dimensions. When the real estate and competitive data came in, the ranking flipped from my initial hypothesis, and I revised the recommendation rather than forcing the data to fit. The sensitivity analysis confirmed the revised ranking was robust across three different weighting profiles before I built the financial model on top of it."
-
-**Data version:** "All data came from free public sources — Census ACS, BLS's Consumer Expenditure Survey and OEWS wage data, Zillow Research, and NAHB's permit data. Competitor counts were hand-collected from each brand's official store locator. Two of my financial model's original assumptions (staffing level and customer conversion rate) didn't hold up against real specialty-retail benchmarks — every scenario was permanently loss-making until I recalibrated them, which is documented in the code."
+Pairs with a **Target Assortment Optimization** project elsewhere in my portfolio — that one models how a retailer should configure its product mix across existing stores; this one models where the next stores should go.

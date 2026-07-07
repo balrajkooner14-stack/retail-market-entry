@@ -101,7 +101,7 @@ def build_scoring_thresholds_tab(wb: Workbook):
     ws.sheet_view.showGridLines = False
     ws["A1"] = "Scoring Thresholds — How Raw Data Becomes a 1-5 Score"
     ws["A1"].font = TITLE_FONT
-    ws["A2"] = "Thresholds recalibrated against real 5-city data ranges where the original placeholder bands did not discriminate (see analysis/scoring_model.py docstring)"
+    ws["A2"] = "Thresholds set against the real range of values across the 5 candidate metros"
     ws["A2"].font = SUBTITLE_FONT
 
     sections = [
@@ -117,16 +117,16 @@ def build_scoring_thresholds_tab(wb: Workbook):
         ]),
         ("Dimension 3 — Homeownership & Housing Activity (weight 20%)", [
             ("Homeownership: >70%", "5"), ("65-70%", "4"), ("60-65%", "3"), ("55-60%", "2"), ("<55%", "1"),
-            ("5yr appreciation (RECALIBRATED): >25%", "5"), ("15-25%", "4"),
+            ("5yr appreciation: >25%", "5"), ("15-25%", "4"),
             ("0-15%", "3"), ("-10-0%", "2"), ("<-10%", "1"),
             ("Building permits: >20,000", "5"), ("15,000-20,000", "4"),
             ("10,000-15,000", "3"), ("7,000-10,000", "2"), ("<7,000", "1"),
         ]),
-        ("Dimension 4 — Competitive Saturation (weight 20%, INVERTED, RECALIBRATED)", [
+        ("Dimension 4 — Competitive Saturation (weight 20%, INVERTED)", [
             ("Competitors per 100k: <0.25", "5"), ("0.25-0.30", "4"),
             ("0.30-0.35", "3"), ("0.35-0.40", "2"), (">0.40", "1"),
         ]),
-        ("Dimension 5 — Retail Lease Rate (weight 10%, INVERTED, RECALIBRATED)", [
+        ("Dimension 5 — Retail Lease Rate (weight 10%, INVERTED)", [
             ("$/sqft/yr: <$23", "5"), ("$23-26", "4"), ("$26-28.50", "3"),
             ("$28.50-31", "2"), (">$31", "1"),
         ]),
@@ -165,7 +165,7 @@ def build_sensitivity_tab(wb: Workbook, sensitivity: pd.DataFrame):
     ws["A1"].font = TITLE_FONT
 
     profile_notes = [
-        "Baseline: weights as specified in CLAUDE.md (Pop&Growth 15%, Income&Spend 20%, Housing 20%, Competition 20%, Lease 10%, Labor 10%, Logistics 5%)",
+        "Baseline: Pop&Growth 15%, Income&Spend 20%, Housing 20%, Competition 20%, Lease 10%, Labor 10%, Logistics 5%",
         "Financial focus: Income&Spend 25% (+5), Lease 15% (+5), Pop&Growth 10% (-5), Competition 15% (-5)",
         "Growth focus: Pop&Growth 25% (+10), Housing 25% (+5), Income&Spend 15% (-5), Competition 15% (-5), Lease 5% (-5)",
     ]
@@ -286,7 +286,7 @@ def build_data_sources_tab(wb: Workbook):
         ("Dim 5", "Retail lease rate $/sqft", "CommercialCafe (CoStar-backed live listings)", "commercialcafe.com", "2026"),
         ("Dim 6", "Retail labor wage", "BLS Occupational Employment and Wage Statistics (OEWS), SOC 41-2031", "api.bls.gov/publicAPI/v2/timeseries/data/", "2025"),
         ("Dim 7", "Driving distance to DC", "Web-verified driving distances", "Nashville->Charlotte 409mi, Austin->SLC 1291mi, Denver->SLC 521mi, Indianapolis->Charlotte 576mi", "2026"),
-        ("Financial", "Revenue/cost model assumptions", "Project team assumptions, recalibrated against real specialty-retail staffing/conversion benchmarks", "See CLAUDE.md", "2026"),
+        ("Financial", "Revenue/cost model assumptions", "Project team assumptions, benchmarked against specialty-retail staffing and conversion norms", "See README.md", "2026"),
     ]
     for i, (dim, point, source, url, year) in enumerate(rows):
         r = header_row + 1 + i

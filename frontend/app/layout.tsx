@@ -11,7 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Meridian Home | Market Entry Analysis",
   description:
-    "McKinsey-style market entry analysis identifying the best US expansion markets for a simulated specialty retailer.",
+    "A market entry analysis for a simulated specialty retailer, picking the best two of five US metros to expand into next.",
 };
 
 export default function RootLayout({

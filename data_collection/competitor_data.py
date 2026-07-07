@@ -1,22 +1,12 @@
-"""Manually-researched datasets that have no clean public API:
-1. Direct competitor store counts per metro (from each brand's official
-   store locator, counted July 2026)
-2. Retail lease rates per sq ft per metro (from CommercialCafe, a CoStar-
-   data-backed market listings aggregator, pulled July 2026)
-3. Driving distance from each metro to Meridian's nearest fictional DC
+"""Manually-researched datasets with no clean public API: competitor store
+counts, retail lease rates, and driving distance to Meridian's nearest
+fictional DC, all pulled July 2026.
 
-Competitor counts were counted by visiting each brand's official store
-locator and counting full-price retail locations within each city's Census-
-defined MSA (matching the CBSA boundaries used for the Census/BLS pulls
-elsewhere in this project) -- NOT a fixed-mile radius from downtown, since
-MSA boundaries are the more reproducible and consistent unit used throughout
-this analysis. Outlet-only locations are excluded (different economics/
-channel than a full-price flagship). Store locators checked:
-  - Crate & Barrel: crateandbarrel.com store list (via storelocators.com)
-  - West Elm: westelm.com/stores/
-  - Pottery Barn: potterybarn.com/stores/
-  - RH: rh.com/us/en/store-locations/stores.jsp
-  - Williams-Sonoma: williams-sonoma.com/stores/
+Competitor counts are full-price locations within each city's Census MSA
+(same CBSA boundaries as the Census/BLS pulls), excluding outlets, counted
+from each brand's official store locator: crateandbarrel.com (via
+storelocators.com), westelm.com/stores, potterybarn.com/stores,
+rh.com/us/en/store-locations, williams-sonoma.com/stores.
 """
 
 from pathlib import Path

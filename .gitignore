@@ -8,3 +8,6 @@ venv/
 .venv/
 .vercel
 .env*
+CLAUDE.md
+frontend/CLAUDE.md
+frontend/AGENTS.md

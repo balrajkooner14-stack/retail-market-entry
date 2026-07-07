@@ -1,18 +1,11 @@
-"""Pulls Zillow Home Value Index (ZHVI) data and Census building permits
-data for the 5 candidate metros.
+"""Pulls Zillow Home Value Index (ZHVI) and building permit data for the
+5 candidate metros.
 
 ZHVI is pulled live from Zillow Research's public CSV (updated monthly).
-
-Census's own Building Permits Survey metro-level ANNUAL file
-(census.gov/construction/bps/msaannual.html) has not been updated past 2021
-(Final) -- Census still collects permits monthly at metro granularity, it
-just doesn't republish that as a metro-annual table on that particular page.
-NAHB (National Association of Home Builders) processes the same underlying
-Census monthly permit survey and republishes a metro-level workbook that IS
-current (through May 2026 at the time of this pull), so we use NAHB's
-FY2025 total instead of Census's stale 2021 metro-annual file.
-Source: https://www.nahb.org/news-and-economics/housing-economics/state-and-local-data/building-permits-by-state-and-metro-area
-(direct file: table32-building-permits-by-state-and-msa.xlsx, "FY2025" column)
+Permits come from NAHB's metro-level workbook rather than Census's own
+metro-annual page, which stalled at 2021 -- NAHB aggregates the same
+underlying Census monthly survey and stays current.
+Source: nahb.org/news-and-economics/housing-economics/state-and-local-data/building-permits-by-state-and-metro-area
 """
 
 from pathlib import Path
@@ -33,11 +26,8 @@ METRO_ZILLOW_NAMES = {
     "Indianapolis, IN": "Indianapolis, IN",
 }
 
-# SOURCE: NAHB "Building Permits by State and Metro Area" workbook
-# (table32-building-permits-by-state-and-msa.xlsx), May 2026 edition,
-# FY2025 TOTAL column -- underlying data is Census's monthly Building
-# Permits Survey, which NAHB aggregates to metro level more currently than
-# Census's own metro-annual page. Units are housing units authorized.
+# NAHB workbook (table32-building-permits-by-state-and-msa.xlsx), FY2025
+# TOTAL column, housing units authorized.
 BUILDING_PERMITS_FY2025 = {
     "Nashville, TN": 19203,
     "Austin, TX": 27322,

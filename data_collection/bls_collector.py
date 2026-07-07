@@ -1,16 +1,10 @@
 """Pulls BLS OES retail wage data and BLS Consumer Expenditure Survey
 home-furnishings spend by Census region for the 5 candidate metros.
 
-BLS OES (Occupational Employment and Wage Statistics) hourly wages are
-pulled live from the public BLS Timeseries API v2 (no key required, but
-rate-limited -- a short delay is added between calls).
-
-BLS Consumer Expenditure Survey (CEX) region-level spend on "Household
-furnishings and equipment" is NOT reliably queryable through the public
-timeseries API (CEX series IDs for this cut aren't exposed there in a
-documented way, and bls.gov blocks non-browser fetches of the table
-downloads). Those 4 region values below are transcribed directly from the
-official published table and cited accordingly -- see SOURCE note.
+Hourly wages come live from the public BLS Timeseries API v2 (rate-limited,
+hence the delay between calls). CEX region-level furnishings spend isn't
+cleanly queryable through that API, so those 4 values are transcribed from
+the published table directly -- see SOURCE note below.
 """
 
 import time

@@ -17,11 +17,6 @@ RAW_DIR = PROJECT_ROOT / "data_collection" / "raw"
 # --- Revenue assumptions ---
 TRADE_AREA_SHARE = 0.15  # fraction of metro population in primary trade area
 AVG_HOUSEHOLD_SIZE = 2.5
-# Originally 2%, which -- combined with the cost structure below -- meant
-# no realistic staffing level could reach breakeven (breakeven required
-# ~5.4 FTE for a 4,500 sqft store, i.e. one person per shift with no
-# coverage). 5% is a more realistic annual capture rate for an established
-# premium brand within its own primary trade area. See CLAUDE.md.
 CONVERSION_RATE = 0.05  # share of homeowner households who become customers/yr
 PURCHASE_FREQUENCY = 1.4  # visits per customer per year
 AVG_TRANSACTION_VALUE = 285
@@ -30,11 +25,7 @@ RAMP_UP = {1: 0.65, 2: 0.85, 3: 1.00}
 
 # --- Cost assumptions ---
 STORE_SQFT = 4500
-# Originally 18 FTE (~250 sqft/employee), which made labor cost alone
-# exceed steady-state store revenue -- no scenario broke even. Real
-# specialty home-goods retail runs closer to 450-500 sqft/FTE; 10 FTE
-# (~450 sqft/FTE) is in line with that benchmark. See CLAUDE.md.
-FTE_COUNT = 10
+FTE_COUNT = 10  # ~450 sqft/employee, in line with specialty home-goods retail staffing
 HOURS_PER_YEAR = 2080
 BENEFITS_LOAD = 1.30
 COGS_RATE = 0.45

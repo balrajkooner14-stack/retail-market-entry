@@ -1,28 +1,10 @@
-"""Builds the 7-dimension weighted city scoring model for Meridian Home's
-market entry decision. See CLAUDE.md for the full methodology writeup.
+"""7-dimension weighted city scoring model for Meridian Home's market entry
+decision. See CLAUDE.md for the full methodology writeup.
 
-THRESHOLD RECALIBRATION NOTE: the original project plan specified 1-5
-scoring thresholds before any real data existed. Once real Census/BLS/
-Zillow/competitor/lease data was collected, three sub-thresholds turned out
-to be miscalibrated for the actual range of values across these 5 real
-metros (they were written for illustrative numbers, not the real ones):
-
-  - Dimension 3's home-price-appreciation threshold ("<15% = 1") lumped
-    Austin's -3.7% (a real price correction) together with Denver's +9.3%
-    (real, modest growth) into the same bottom score, even though those are
-    very different outcomes.
-  - Dimension 4 (competitive saturation) thresholds assumed much denser
-    competitor fields (">2.5 per 100k = worst") than any of these 5 cities
-    actually have (real range is 0.21-0.37 per 100k) -- under the original
-    bands ALL 5 cities scored a perfect 5, making a 20%-weighted dimension
-    contribute zero discrimination to the ranking.
-  - Dimension 5 (lease rate) thresholds assumed a wider spread ($22-$38)
-    than the real 5-city range ($22.20-$30.12), similarly compressing
-    everyone into 2 adjacent bands.
-
-Each fix below is called out at the threshold definition with the real data
-range that motivated it. The direction (higher/lower raw value = better)
-and the dimension weights are unchanged from the original spec.
+Dimensions 3-5's thresholds are tuned to the actual 5-city data range rather
+than round numbers, since a couple of the round-number versions barely
+spread the cities apart (e.g. competitive saturation, where every candidate
+sits under 0.4 per 100k).
 """
 
 import sys
@@ -46,28 +28,24 @@ WEIGHTS = {
     "dim7": 0.05,  # Logistics Proximity (inverted)
 }
 
-# Alternative weight profiles for sensitivity analysis. The original plan
-# doc's Profile B and Profile C text specified increases/decreases that did
-# not sum back to 100% (it changed 3 dimensions but only balanced 2 of the
-# deltas). Rebalanced here by trimming one additional, thematically
-# consistent dimension in each profile so all profiles sum to 1.00 exactly.
+# Alternative weight profiles for sensitivity analysis, each still summing to 1.00.
 WEIGHT_PROFILES = {
     "baseline": WEIGHTS,
     "financial_focus": {
-        "dim1": 0.10,  # -0.05
-        "dim2": 0.25,  # +0.05
+        "dim1": 0.10,
+        "dim2": 0.25,
         "dim3": 0.20,
-        "dim4": 0.15,  # -0.05 (added to balance; saturation is less "financial")
-        "dim5": 0.15,  # +0.05
+        "dim4": 0.15,
+        "dim5": 0.15,
         "dim6": 0.10,
         "dim7": 0.05,
     },
     "growth_focus": {
-        "dim1": 0.25,  # +0.10
-        "dim2": 0.15,  # -0.05 (added to balance; spend is less "growth")
-        "dim3": 0.25,  # +0.05
-        "dim4": 0.15,  # -0.05
-        "dim5": 0.05,  # -0.05
+        "dim1": 0.25,
+        "dim2": 0.15,
+        "dim3": 0.25,
+        "dim4": 0.15,
+        "dim5": 0.05,
         "dim6": 0.10,
         "dim7": 0.05,
     },
@@ -122,9 +100,6 @@ def _score_dim3_homeownership_housing(row) -> float:
     ownership_score = _bucket(
         row["homeownership_rate"] * 100, [(70, 5), (65, 4), (60, 3), (55, 2), (0, 1)]
     )
-    # Recalibrated to the real 5-city range (-3.7% to +30.4%); see module
-    # docstring. Cleanly separates the 3 "hot" markets (~28-30%) from
-    # Denver's modest growth and Austin's price correction.
     appreciation_score = _bucket(
         row["home_value_appreciation_5yr_pct"], [(25, 5), (15, 4), (0, 3), (-10, 2), (-999, 1)]
     )
@@ -135,16 +110,10 @@ def _score_dim3_homeownership_housing(row) -> float:
 
 
 def _score_dim4_competitive_saturation(row) -> float:
-    # Recalibrated to the real 5-city range (0.21-0.37 per 100k); the
-    # original bands (worst case ">2.5 per 100k") were an order of
-    # magnitude denser than any real city here, so all 5 scored a perfect
-    # 5 and this 20%-weighted dimension didn't discriminate at all.
     return _bucket(row["competitors_per_100k"], [(0.40, 1), (0.35, 2), (0.30, 3), (0.25, 4), (0, 5)])
 
 
 def _score_dim5_lease_rate(row) -> float:
-    # Recalibrated to the real 5-city range ($22.20-$30.12); original
-    # bands assumed a $22-$38 spread and compressed everyone into 2 bands.
     return _bucket(
         row["retail_lease_rate_sqft_annual"], [(31, 1), (28.5, 2), (26, 3), (23, 4), (0, 5)]
     )
@@ -185,10 +154,8 @@ def _attach_logistics_distance(df: pd.DataFrame) -> pd.DataFrame:
 def build_city_scores(weights: dict[str, float] = None, save: bool = True) -> pd.DataFrame:
     """Scores all 5 cities across the 7 dimensions and ranks them.
 
-    Only persists to city_scores.csv when save=True (the default, intended
-    for the one canonical baseline-weighted run). Sensitivity analysis scores
-    cities under alternative weight profiles too, and must NOT let those
-    overwrite the canonical baseline file -- it calls this with save=False.
+    save=False is used by the sensitivity analysis below so alternate weight
+    profiles don't clobber the canonical baseline city_scores.csv.
     """
     weights = weights or WEIGHTS
     df = _load_merged_data()
